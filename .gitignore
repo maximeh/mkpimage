@@ -6,6 +6,10 @@
 # Folders
 _obj
 _test
+/bin
+bin/*
+bin
+third_party/*
 
 # Architecture specific extensions/prefixes
 *.[568vq]
@@ -20,3 +24,9 @@ _cgo_export.*
 _testmain.go
 
 *.exe
+*.test
+*.prof
+
+*.sublime-*
+.gopath
+
