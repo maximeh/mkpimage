@@ -1,22 +1,21 @@
-basedir = $(shell pwd)
-gopath = "$(basedir)/third_party:$(GOPATH)"
+gopath = "$(CURDIR)/third_party"
 cover = $(COVER)
 
-.PNONY: all test deps fmt clean check-gopath
+.PNONY: all test deps fmt clean
 
-all: check-gopath clean fmt deps test
+all: clean fmt deps test
 	@echo "==> Compiling source code."
 	@env GOPATH=$(gopath) go build -v -o ./bin/mkpimage ./mkpimage
 
-race: check-gopath clean fmt deps test
+race: clean fmt deps test
 	@echo "==> Compiling source code with race detection enabled."
 	@env GOPATH=$(gopath) go build -race -o ./bin/mkpimage ./mkpimage
 
-test: check-gopath
+test:
 	@echo "==> Running tests."
 	@env GOPATH=$(gopath) go test $(cover) ./mkpimage
 
-deps: check-gopath
+deps:
 	@echo "==> Downloading dependencies."
 	@env GOPATH=$(gopath) go get -d -v ./mkpimage/...
 	@echo "==> Removing SCM files from third_party."
@@ -31,8 +30,3 @@ fmt:
 clean:
 	@echo "==> Cleaning up previous builds."
 	@rm -rf "$(GOPATH)/pkg" ./third_party/pkg ./bin
-
-check-gopath:
-ifndef GOPATH
-	$(error GOPATH is undefined)
-endif
